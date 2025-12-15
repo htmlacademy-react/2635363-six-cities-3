@@ -1,8 +1,6 @@
-import OfferCard, { OfferCardProps } from '../components/OfferCard';
+import OfferCard from '../components/OfferCard';
+import { OfferCardProps, MainPageProps } from '../../types/types';
 
-export interface MainPageProps {
-  offers: OfferCardProps[];
-}
 
 const MainPage: React.FC<MainPageProps> = ({ offers }) => (
   <div className="page page--gray page--main">
@@ -94,8 +92,8 @@ const MainPage: React.FC<MainPageProps> = ({ offers }) => (
               </ul>
             </form>
             <div className="cities__places-list places__list tabs__content">
-              {offers.map((offer: OfferCardProps, index: number) => (
-                <OfferCard key={index} {...offer} />
+              {offers.map((offer: OfferCardProps) => (
+                <OfferCard key={offer.id} {...offer} />
               ))}
               {/* <article className="cities__card place-card">
                   <div className="place-card__mark">

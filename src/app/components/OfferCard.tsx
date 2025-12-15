@@ -1,12 +1,4 @@
-
-
-export interface OfferCardProps {
-  price: number;
-  rating: number; // 0–100 (%)
-  title: string;
-  type: string;
-  image: string;
-}
+import { OfferCardProps } from '../../types/types';
 
 const OfferCard: React.FC<OfferCardProps> = ({ price, rating, title, type, image }) => (
   <article className="cities__card place-card">
