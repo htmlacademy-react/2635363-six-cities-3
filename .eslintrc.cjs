@@ -14,11 +14,16 @@ module.exports = {
   plugins: ['react-refresh'],
   rules: {
     'react-refresh/only-export-components': 'warn',
+    // я добавил
+    'react/prop-types': 'off',
   },
   overrides: [
     {
-      files: [ '*test*' ],
+      files: ['*test*'],
       rules: { '@typescript-eslint/unbound-method': 'off' }
     },
+  ],
+  ignorePatterns: [
+    '.eslintrc.cjs',
   ],
 }
