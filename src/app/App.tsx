@@ -12,7 +12,7 @@ interface AppProps {
   offers: OffersFull[];
 }
 
-const isAuthenticated = false;
+const isAuthenticated = true;
 
 const App: React.FC<MainPageProps & AppProps> = ({ offers }) => (
   <BrowserRouter>
@@ -23,7 +23,7 @@ const App: React.FC<MainPageProps & AppProps> = ({ offers }) => (
       {/* Приватный маршрут */}
       <Route path="/favorites" element={
         <PrivateRoute isAuthenticated={isAuthenticated}>
-          <FavoritesPage />
+          <FavoritesPage offers={offers} />
         </PrivateRoute>
       }
       />

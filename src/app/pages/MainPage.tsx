@@ -1,5 +1,5 @@
-import OfferCard from '../components/OfferCard';
-import { OfferPreview, MainPageProps } from '../../types/types';
+import { MainPageProps } from '../../types/types';
+import OffersList from '../components/OffersList';
 
 
 const MainPage: React.FC<MainPageProps> = ({ offers }) => (
@@ -92,9 +92,9 @@ const MainPage: React.FC<MainPageProps> = ({ offers }) => (
               </ul>
             </form>
             <div className="cities__places-list places__list tabs__content">
-              {offers.map((offer: OfferPreview) => (
-                <OfferCard key={offer.id} {...offer} />
-              ))}
+
+              <OffersList offers={offers} />
+
             </div>
           </section>
           <div className="cities__right-section">
@@ -105,5 +105,4 @@ const MainPage: React.FC<MainPageProps> = ({ offers }) => (
     </main>
   </div>
 );
-
 export default MainPage;

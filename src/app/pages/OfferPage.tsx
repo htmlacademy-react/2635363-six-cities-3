@@ -1,6 +1,9 @@
 import { Link, useParams } from 'react-router-dom';
 import { OffersFull } from '../../types/types';
 import { getRatingWidth } from '../utils/rating';
+import { reviews } from '../../mocks/reviews';
+import ReviewItem from '../components/ReviewItem';
+import ReviewForm from '../components/ReviewForm';
 
 export interface OfferPageProps {
   offers: OffersFull[];
@@ -161,9 +164,15 @@ const OfferPage: React.FC<OfferPageProps> = ({ offers }) => {
                 </div>
               </div>
               <section className="offer__reviews reviews">
-                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">1</span></h2>
+                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
                 <ul className="reviews__list">
-                  <li className="reviews__item">
+                  {reviews.map((review) => (
+                    <ReviewItem key={review.id} review={review} />
+                  ))}
+
+                  <ReviewForm />
+
+                  {/* <li className="reviews__item">
                     <div className="reviews__user user">
                       <div className="reviews__avatar-wrapper user__avatar-wrapper">
                         <img className="reviews__avatar user__avatar" src="img/avatar-max.jpg" width="54" height="54" alt="Reviews avatar" />
@@ -184,9 +193,9 @@ const OfferPage: React.FC<OfferPageProps> = ({ offers }) => {
                       </p>
                       <time className="reviews__time" dateTime="2019-04-24">April 2019</time>
                     </div>
-                  </li>
+                  </li> */}
                 </ul>
-                <form className="reviews__form form" action="#" method="post">
+                {/* <form className="reviews__form form" action="#" method="post">
                   <label className="reviews__label form__label" htmlFor="review">Your review</label>
                   <div className="reviews__rating-form form__rating">
                     <input className="form__rating-input visually-hidden" name="rating" value="5" id="5-stars" type="radio" />
@@ -231,7 +240,7 @@ const OfferPage: React.FC<OfferPageProps> = ({ offers }) => {
                     </p>
                     <button className="reviews__submit form__submit button" type="submit" disabled>Submit</button>
                   </div>
-                </form>
+                </form> */}
               </section>
             </div>
           </div>

@@ -14,6 +14,12 @@ export interface City {
   location: Location;
 }
 
+export interface OfferCardProps {
+  offer: OfferPreview;
+  isActive: boolean;
+  onOfferMouseEnter: (id: string) => void;
+  onOfferMouseLeave: () => void;
+}
 
 export interface OfferPreview {
   id: string;
