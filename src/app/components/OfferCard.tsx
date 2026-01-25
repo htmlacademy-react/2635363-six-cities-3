@@ -5,12 +5,14 @@ import { OfferCardProps } from '../../types/types';
 const OfferCard: React.FC<OfferCardProps> = ({
   offer,
   onOfferMouseEnter,
+  onOfferMouseLeave,
+  onFavoriteClick
 }) => {
-  const { id, price, rating, title, type, previewImage } = offer;
+  const { id, price, rating, title, type, previewImage, isFavorite = false } = offer;
   return (
     <article
       onMouseEnter={() => onOfferMouseEnter(id)}
-      onMouseLeave={() => onOfferMouseEnter('')}
+      onMouseLeave={() => onOfferMouseLeave()}
       className="cities__card place-card"
     >
       <div className="cities__image-wrapper place-card__image-wrapper">
@@ -29,11 +31,17 @@ const OfferCard: React.FC<OfferCardProps> = ({
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className="place-card__bookmark-button place-card__bookmark-button--active button" type="button">
+          <button
+            className={`place-card__bookmark-button button ${isFavorite ? 'place-card__bookmark-button--active' : ''}`}
+            type="button"
+            onClick={() => onFavoriteClick(offer.id)}
+          >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
             </svg>
-            <span className="visually-hidden">In bookmarks</span>
+            <span className="visually-hidden">
+              {isFavorite ? 'In bookmarks' : 'To bookmarks'}
+            </span>
           </button>
         </div>
         <div className="place-card__rating rating">

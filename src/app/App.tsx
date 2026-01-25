@@ -1,6 +1,6 @@
 import React from 'react';
 import MainPage from './pages/MainPage';
-import { MainPageProps, OffersFull } from '../types/types';
+import { OffersFull } from '../types/types';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import NotFoundPage from './pages/NotFoundPage';
 import LoginPage from './pages/LoginPage';
@@ -10,11 +10,12 @@ import PrivateRoute from './components/PrivateRoute';
 
 interface AppProps {
   offers: OffersFull[];
+  onFavoriteClick: (id: string) => void;
 }
 
 const isAuthenticated = true;
 
-const App: React.FC<MainPageProps & AppProps> = ({ offers }) => (
+const App: React.FC<AppProps> = ({ offers, onFavoriteClick }) => (
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<MainPage offers={offers} />} />
@@ -23,7 +24,7 @@ const App: React.FC<MainPageProps & AppProps> = ({ offers }) => (
       {/* Приватный маршрут */}
       <Route path="/favorites" element={
         <PrivateRoute isAuthenticated={isAuthenticated}>
-          <FavoritesPage offers={offers} />
+          <FavoritesPage offers={offers} onFavoriteClick={onFavoriteClick} />
         </PrivateRoute>
       }
       />

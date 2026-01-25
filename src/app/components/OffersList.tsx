@@ -4,9 +4,10 @@ import { useState } from 'react';
 
 type OffersListProps = {
   offers: OfferPreview[];
+  onFavoriteClick: (id: string) => void;
 };
 
-const OffersList: React.FC<OffersListProps> = ({ offers }) => {
+const OffersList: React.FC<OffersListProps> = ({ offers, onFavoriteClick }) => {
   const [activeOfferId, setActiveOfferId] = useState<string | null>(null);
 
   const handleOfferMouseEnter = (id: string) => setActiveOfferId(id);
@@ -20,6 +21,7 @@ const OffersList: React.FC<OffersListProps> = ({ offers }) => {
           isActive={offer.id === activeOfferId}
           onOfferMouseEnter={handleOfferMouseEnter}
           onOfferMouseLeave={handleOfferMouseLeave}
+          onFavoriteClick={onFavoriteClick}
         />
       ))}
     </>

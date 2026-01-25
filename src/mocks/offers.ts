@@ -1,4 +1,5 @@
 import { OffersFull } from '../types/types';
+import { City } from '../types/types';
 
 export const images = [
   'img/room.jpg',
@@ -8,12 +9,56 @@ export const images = [
   'img/studio-01.jpg',
 ];
 
-const amsterdamCity = {
-  name: 'Amsterdam',
-  location: {
-    latitude: 52.35514938496378,
-    longitude: 4.673877537499948,
-    zoom: 8,
+export const CITIES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
+
+export const CITIES_DATA: Record<string, City> = {
+  Paris: {
+    name: 'Paris',
+    location: {
+      latitude: 48.85661,
+      longitude: 2.351499,
+      zoom: 12,
+    },
+  },
+  Cologne: {
+    name: 'Cologne',
+    location: {
+      latitude: 50.9333,
+      longitude: 6.95,
+      zoom: 12,
+    },
+  },
+  Brussels: {
+    name: 'Brussels',
+    location: {
+      latitude: 50.8466,
+      longitude: 4.3528,
+      zoom: 12,
+    },
+  },
+  Amsterdam: {
+    name: 'Amsterdam',
+    location: {
+      latitude: 52.3909553943508,
+      longitude: 4.85309666406198,
+      zoom: 12,
+    },
+  },
+  Hamburg: {
+    name: 'Hamburg',
+    location: {
+      latitude: 53.550341,
+      longitude: 9.993157,
+      zoom: 12,
+    },
+  },
+  Dusseldorf: {
+    name: 'Dusseldorf',
+    location: {
+      latitude: 51.2277,
+      longitude: 6.7735,
+      zoom: 12,
+    },
   },
 };
 
@@ -26,7 +71,7 @@ const offers: OffersFull[] = [
     rating: 4,
     previewImage: images[0],
 
-    city: amsterdamCity,
+    city: CITIES_DATA.Amsterdam,
     location: {
       latitude: 52.3909553943508,
       longitude: 4.85309666406198,
@@ -56,9 +101,9 @@ const offers: OffersFull[] = [
     rating: 4.5,
     previewImage: images[1],
 
-    city: amsterdamCity,
+    city: CITIES_DATA.Amsterdam,
     location: {
-      latitude: 52.369553943508,
+      latitude: 52.3609553943508,
       longitude: 4.85309666406198,
       zoom: 8,
     },
@@ -86,10 +131,10 @@ const offers: OffersFull[] = [
     rating: 4.7,
     previewImage: images[2],
 
-    city: amsterdamCity,
+    city: CITIES_DATA.Amsterdam,
     location: {
-      latitude: 52.365553943508,
-      longitude: 4.86109666406198,
+      latitude: 52.3909553943508,
+      longitude: 4.929309666406198,
       zoom: 8,
     },
 
@@ -116,10 +161,10 @@ const offers: OffersFull[] = [
     rating: 5,
     previewImage: images[3],
 
-    city: amsterdamCity,
+    city: CITIES_DATA.Amsterdam,
     location: {
-      latitude: 52.375553943508,
-      longitude: 4.84109666406198,
+      latitude: 52.3809553943508,
+      longitude: 4.939309666406198,
       zoom: 8,
     },
 
@@ -146,7 +191,7 @@ const offers: OffersFull[] = [
     rating: 4.3,
     previewImage: images[4],
 
-    city: amsterdamCity,
+    city: CITIES_DATA.Amsterdam,
     location: {
       latitude: 52.358553943508,
       longitude: 4.87109666406198,
@@ -167,6 +212,66 @@ const offers: OffersFull[] = [
     },
     images,
   },
+
+  {
+    id: '6',
+    title: 'Canal View Prinsengracht',
+    type: 'Apartment',
+    price: 132,
+    rating: 4.7,
+    previewImage: images[2],
+
+    city: CITIES_DATA.Paris,
+    location: {
+      latitude: 48.85661,
+      longitude: 2.351499,
+      zoom: 8,
+    },
+
+    isFavorite: false,
+    isPremium: false,
+
+    description: 'Apartment with stunning canal view.',
+    bedrooms: 2,
+    maxAdults: 3,
+    goods: ['Wi-Fi', 'Heating'],
+    host: {
+      name: 'Sophie',
+      avatarUrl: 'img/avatar-angelina.jpg',
+      isPro: true,
+    },
+    images,
+  },
+
+  {
+    id: '7',
+    title: 'Nice, cozy, warm big bed apartment',
+    type: 'Apartment',
+    price: 180,
+    rating: 5,
+    previewImage: images[3],
+
+    city: CITIES_DATA.Paris,
+    location: {
+      latitude: 48.85661,
+      longitude: 2.351499,
+      zoom: 8,
+    },
+
+    isFavorite: true,
+    isPremium: false,
+
+    description: 'Perfect place for a comfortable stay.',
+    bedrooms: 2,
+    maxAdults: 4,
+    goods: ['Air conditioning', 'Kitchen', 'Coffee machine'],
+    host: {
+      name: 'John',
+      avatarUrl: 'img/avatar-max.jpg',
+      isPro: false,
+    },
+    images,
+  }
 ];
 
 export default offers;

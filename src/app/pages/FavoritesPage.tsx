@@ -4,9 +4,10 @@ import OfferCard from '../components/OfferCard';
 
 export interface FavoritesPageProps {
   offers: OfferPreview[];
+  onFavoriteClick: (id: string) => void;
 }
 
-const FavoritesPage: React.FC<FavoritesPageProps> = ({ offers }) => {
+const FavoritesPage: React.FC<FavoritesPageProps> = ({ offers, onFavoriteClick }) => {
   const favoriteOffers = offers.filter((offer) => offer.isFavorite);
 
   const groupedByCity = favoriteOffers
@@ -72,7 +73,9 @@ const FavoritesPage: React.FC<FavoritesPageProps> = ({ offers }) => {
                   </div>
                   <div className="favorites__places">
                     {cityOffers.map((offer) => (
-                      <OfferCard isActive={false} key={offer.id} offer={offer} onOfferMouseEnter={() => { }} onOfferMouseLeave={() => { }} />
+                      <OfferCard isActive={false} key={offer.id} offer={offer} onOfferMouseEnter={() => { }} onOfferMouseLeave={() => { }}
+                        onFavoriteClick={onFavoriteClick}
+                      />
                     ))}
                   </div>
                 </li>
