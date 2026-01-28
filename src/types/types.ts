@@ -19,20 +19,22 @@ export interface OfferCardProps {
   isActive: boolean;
   onOfferMouseEnter: (id: string) => void;
   onOfferMouseLeave: () => void;
+  onFavoriteClick: (id: string) => void;
+  className?: string;
 }
 
 export interface OfferPreview {
   id: string;
   price: number;
-  rating: number; // 0–5
+  rating: number;
   title: string;
   type: string;
   previewImage: string;
 
-  city?: City;
-  location?: Location;
+  city: City;
+  location: Location;
 
-  isFavorite?: boolean;
+  isFavorite: boolean;
   isPremium?: boolean;
 
 }
