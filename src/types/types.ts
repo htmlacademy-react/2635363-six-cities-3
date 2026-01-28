@@ -20,6 +20,7 @@ export interface OfferCardProps {
   onOfferMouseEnter: (id: string) => void;
   onOfferMouseLeave: () => void;
   onFavoriteClick: (id: string) => void;
+  className?: string;
 }
 
 export interface OfferPreview {

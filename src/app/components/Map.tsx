@@ -5,21 +5,22 @@ import { City, OfferPreview } from '../../types/types';
 type MapProps = {
   city: City;
   offers: OfferPreview[];
+  activeOfferId?: string | null;
 };
 
 const defaultIcon = leaflet.icon({
   iconUrl: 'img/pin.svg',
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
+});
+
+const activeIcon = leaflet.icon({
+  iconUrl: 'img/pin-active.svg',
   iconSize: [27, 39],
   iconAnchor: [13, 39],
 });
 
-// const activeIcon = leaflet.icon({
-//   iconUrl: 'img/pin-active.svg',
-//   iconSize: [27, 39],
-//   iconAnchor: [13, 39],
-// });
-
-const Map: React.FC<MapProps> = ({ city, offers }) => {
+const Map: React.FC<MapProps> = ({ city, offers, activeOfferId }) => {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<leaflet.Map | null>(null);
   const markersLayerRef = useRef<leaflet.LayerGroup | null>(null);
@@ -50,12 +51,10 @@ const Map: React.FC<MapProps> = ({ city, offers }) => {
   }, []);
 
   useEffect(() => {
-    if (mapInstanceRef.current) {
-      mapInstanceRef.current.setView(
-        [city.location.latitude, city.location.longitude],
-        city.location.zoom
-      );
-    }
+    mapInstanceRef.current?.setView(
+      [city.location.latitude, city.location.longitude],
+      city.location.zoom
+    );
   }, [city]);
 
   useEffect(() => {
@@ -72,22 +71,18 @@ const Map: React.FC<MapProps> = ({ city, offers }) => {
 
     offers.forEach((offer) => {
       leaflet
-        .marker(
-          [
-            offer.location.latitude,
-            offer.location.longitude,
-          ],
-          { icon: defaultIcon }
-        )
+        .marker([offer.location.latitude, offer.location.longitude], {
+          icon: offer.id === activeOfferId ? activeIcon : defaultIcon,
+        })
         .addTo(layer);
     });
 
     markersLayerRef.current = layer;
-  }, [offers]);
+  }, [offers, activeOfferId]);
 
   return (
-    <section
-      className="cities__map map"
+    <div
+      style={{ height: '100%' }}
       ref={mapRef}
     />
   );

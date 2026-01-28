@@ -223,8 +223,8 @@ const offers: OffersFull[] = [
 
     city: CITIES_DATA.Paris,
     location: {
-      latitude: 48.85661,
-      longitude: 2.351499,
+      latitude: 48.8584,
+      longitude: 2.2945,
       zoom: 8,
     },
 
@@ -253,8 +253,8 @@ const offers: OffersFull[] = [
 
     city: CITIES_DATA.Paris,
     location: {
-      latitude: 48.85661,
-      longitude: 2.351499,
+      latitude: 48.8738,
+      longitude: 2.2950,
       zoom: 8,
     },
 

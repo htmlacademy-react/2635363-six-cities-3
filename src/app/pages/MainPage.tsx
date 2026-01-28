@@ -11,6 +11,8 @@ import { CITIES_DATA } from '../../mocks/offers';
 const MainPage: React.FC<MainPageProps> = ({ offers }) => {
   const [activeCity, setActiveCity] = useState('Paris');
   const [offersState, setOffersState] = useState<OfferPreview[]>(offers);
+  const [activeOfferId, setActiveOfferId] = useState<string | null>(null);
+
   const filteredOffers = offersState.filter(
     (offer) => offer.city?.name === activeCity
   );
@@ -108,23 +110,28 @@ const MainPage: React.FC<MainPageProps> = ({ offers }) => {
 
                 <OffersList
                   offers={filteredOffers}
+                  activeOfferId={activeOfferId}
                   onFavoriteClick={onFavoriteClick}
+                  onActiveOfferChange={setActiveOfferId}
                 />
 
               </div>
             </section>
             <div className="cities__right-section">
-              {cityData && (
-                <Map
-                  city={cityData}
-                  offers={filteredOffers}
-                />
-              )}
+              <section className="cities__map map" >
+                {cityData && (
+                  <Map
+                    city={cityData}
+                    offers={filteredOffers}
+                    activeOfferId={activeOfferId}
+                  />
+                )}
+              </section>
             </div>
           </div>
         </div>
-      </main>
-    </div>
+      </main >
+    </div >
   );
 };
 export default MainPage;
