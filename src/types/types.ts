@@ -127,3 +127,10 @@ export interface OffersState {
 
 export type ActionType = | { type: 'SET_CITY'; payload: string }
   | { type: 'SET_OFFERS'; payload: OfferPreview[] };
+
+export type SortType = 'Popular' | 'PriceLowToHigh' | 'PriceHighToLow' | 'TopRated';
+
+export type SortingOptionsProps = {
+  sortType: SortType;
+  onSortTypeChange: (type: SortType) => void;
+}
