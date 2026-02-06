@@ -10,12 +10,11 @@ import PrivateRoute from './components/PrivateRoute';
 
 interface AppProps {
   offers: OffersFull[];
-  onFavoriteClick: (id: string) => void;
 }
 
 const isAuthenticated = true;
 
-const App: React.FC<AppProps> = ({ offers, onFavoriteClick }) => (
+const App: React.FC<AppProps> = ({ offers }) => (
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<MainPage />} />
@@ -24,7 +23,7 @@ const App: React.FC<AppProps> = ({ offers, onFavoriteClick }) => (
       {/* Приватный маршрут */}
       <Route path="/favorites" element={
         <PrivateRoute isAuthenticated={isAuthenticated}>
-          <FavoritesPage offers={offers} onFavoriteClick={onFavoriteClick} />
+          <FavoritesPage />
         </PrivateRoute>
       }
       />

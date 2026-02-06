@@ -7,21 +7,27 @@ const OfferCard: React.FC<OfferCardProps> = ({
   onOfferMouseEnter,
   onOfferMouseLeave,
   onFavoriteClick,
-  className = 'cities__card'
+  className = 'favorites__card'
 }) => {
-  const { id, price, rating, title, type, previewImage, isFavorite = false } = offer;
+  const { id, price, rating, title, type, previewImage, isFavorite = false, isPremium = false } = offer;
   return (
     <article
       onMouseEnter={() => onOfferMouseEnter(id)}
       onMouseLeave={() => onOfferMouseLeave()}
       className={`${className} place-card`}
     >
-      <div className="cities__image-wrapper place-card__image-wrapper">
+      {isPremium && (
+        <div className="place-card__mark">
+          <span>Premium</span>
+        </div>
+      )}
+
+      <div className="favorites__image-wrapper place-card__image-wrapper">
         <Link to={`/offer/${id}`} key={id}>
           <img className="place-card__image"
             src={previewImage}
-            width="260"
-            height="200"
+            width="150"
+            height="110"
             alt="Place image"
           />
         </Link>

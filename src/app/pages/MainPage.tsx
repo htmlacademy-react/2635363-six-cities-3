@@ -1,22 +1,21 @@
 import { CITIES } from '../../mocks/offers';
 import { CITIES_DATA } from '../../mocks/offers';
-import { Link } from 'react-router-dom';
 import OffersList from '../components/OffersList';
 import { useState } from 'react';
 import Map from '../components/Map';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../store/index';
+import { useAppDispatch, useAppSelector } from '../../store/store-hooks';
 import { changeCity } from '../../store/actions';
 import CitiesList from '../components/CitiesList';
 import { toggleFavorite } from '../../store/offersSlice';
 import SortingOptions from '../components/SortingOptions';
 import { SortType } from '../../types/types';
+import Header from '../components/Header';
 
 
 const MainPage: React.FC = () => {
-  const city = useSelector((state: RootState) => state.city.city);
-  const offers = useSelector((state: RootState) => state.offers.offers);
-  const dispatch = useDispatch();
+  const city = useAppSelector((state) => state.city.city);
+  const offers = useAppSelector((state) => state.offers.offers);
+  const dispatch = useAppDispatch();
   const [activeOfferId, setActiveOfferId] = useState<string | null>(null);
   const [sortType, setSortType] = useState<SortType>('Popular');
 
@@ -40,10 +39,6 @@ const MainPage: React.FC = () => {
     dispatch(changeCity(cityName));
   };
 
-  const favoritesCount = offers.filter(
-    (offer) => offer.isFavorite
-  ).length;
-
   const cityData = CITIES_DATA[city];
 
   const onFavoriteClick = (id: string) => {
@@ -52,34 +47,9 @@ const MainPage: React.FC = () => {
 
   return (
     <div className="page page--gray page--main">
-      <header className="header">
-        <div className="container">
-          <div className="header__wrapper">
-            <div className="header__left">
-              <a className="header__logo-link header__logo-link--active">
-                <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
-              </a>
-            </div>
-            <nav className="header__nav">
-              <ul className="header__nav-list">
-                <li className="header__nav-item user">
-                  <Link className="header__nav-link header__nav-link--profile" to="/favorites">
-                    <div className="header__avatar-wrapper user__avatar-wrapper">
-                    </div>
-                    <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                    <span className="header__favorite-count">{favoritesCount}</span>
-                  </Link>
-                </li>
-                <li className="header__nav-item">
-                  <a className="header__nav-link" href="#">
-                    <span className="header__signout">Sign out</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </header>
+
+      <Header />
+
 
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>

@@ -259,7 +259,7 @@ const offers: OffersFull[] = [
     },
 
     isFavorite: true,
-    isPremium: false,
+    isPremium: true,
 
     description: 'Perfect place for a comfortable stay.',
     bedrooms: 2,

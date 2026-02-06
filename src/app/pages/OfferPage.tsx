@@ -1,20 +1,23 @@
-import { Link, useParams } from 'react-router-dom';
-import { OffersFull } from '../../types/types';
+import { useParams } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../store/store-hooks';
 import { getRatingWidth } from '../utils/rating';
 import { reviews } from '../../mocks/reviews';
 import ReviewList from '../components/ReviewList';
 import Map from '../components/Map';
 import OfferCard from '../components/OfferCard';
 import { useState } from 'react';
+import Header from '../components/Header';
+import { toggleFavorite } from '../../store/offersSlice';
+import { OffersFull } from '../../types/types';
 
-export interface OfferPageProps {
-  offers: OffersFull[];
-}
 
-const OfferPage: React.FC<OfferPageProps> = ({ offers }) => {
-  const { id } = useParams<{ id: string }>();
-  const currentOffer = offers.find((offer) => offer.id === id);
-  const [isFavorite, setIsFavorite] = useState(currentOffer?.isFavorite);
+const OfferPage: React.FC = () => {
+  const dispatch = useAppDispatch();
+
+  const offers = useAppSelector((state) => state.offers.offers);
+  const { id } = useParams();
+
+  const currentOffer = offers.find((offer: OffersFull) => offer.id === id);
   const [activeOfferId, setActiveOfferId] = useState<string | null>(null);
 
   if (!id) {
@@ -28,47 +31,10 @@ const OfferPage: React.FC<OfferPageProps> = ({ offers }) => {
   const nearbyOffers = offers.filter((offer) => offer.id !== currentOffer.id).slice(0, 3);
   const onMapOffers = [currentOffer, ...nearbyOffers];
 
-  const handleFavoriteClick = () => {
-    setIsFavorite(!isFavorite);
-  };
-
   return (
     <div className="page">
 
-      <header className="header">
-        <div className="container">
-          <div className="header__wrapper">
-            <div className="header__left">
-              <Link className="header__logo-link" to="/">
-                <img
-                  className="header__logo"
-                  src="img/logo.svg"
-                  alt="6 cities logo"
-                  width="81"
-                  height="41"
-                />
-              </Link>
-            </div>
-            <nav className="header__nav">
-              <ul className="header__nav-list">
-                <li className="header__nav-item user">
-                  <a className="header__nav-link header__nav-link--profile" href="#">
-                    <div className="header__avatar-wrapper user__avatar-wrapper">
-                    </div>
-                    <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                    <span className="header__favorite-count">3</span>
-                  </a>
-                </li>
-                <li className="header__nav-item">
-                  <a className="header__nav-link" href="#">
-                    <span className="header__signout">Sign out</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       <main className="page__main page__main--offer">
         <section className="offer">
@@ -100,7 +66,14 @@ const OfferPage: React.FC<OfferPageProps> = ({ offers }) => {
                 <h1 className="offer__name">
                   {currentOffer.title}
                 </h1>
-                <button className={`offer__bookmark-button button ${isFavorite ? 'offer__bookmark-button--active' : ''}`} onClick={handleFavoriteClick} type="button">
+                <button
+                  className={
+                    `offer__bookmark-button button ${currentOffer.isFavorite ?
+                      'offer__bookmark-button--active' : ''
+                    }`
+                  }
+                  onClick={() => dispatch(toggleFavorite(currentOffer.id))} type="button"
+                >
                   <svg className="offer__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
@@ -191,7 +164,7 @@ const OfferPage: React.FC<OfferPageProps> = ({ offers }) => {
                   isActive={offer.id === activeOfferId}
                   onOfferMouseEnter={() => setActiveOfferId(offer.id)}
                   onOfferMouseLeave={() => setActiveOfferId(null)}
-                  onFavoriteClick={() => { }}
+                  onFavoriteClick={() => dispatch(toggleFavorite(offer.id))}
                   className="near-places__card"
                 />
               ))}

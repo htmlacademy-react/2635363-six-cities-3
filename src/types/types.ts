@@ -59,7 +59,7 @@ export interface OfferPreview {
   location: Location;
 
   isFavorite: boolean;
-  isPremium?: boolean;
+  isPremium: boolean;
 
 }
 
@@ -122,7 +122,7 @@ export type State = {
 }
 
 export interface OffersState {
-  offers: OfferPreview[];
+  offers: OffersFull[];
 }
 
 export type ActionType = | { type: 'SET_CITY'; payload: string }
