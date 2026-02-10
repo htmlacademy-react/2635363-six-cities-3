@@ -1,7 +1,8 @@
 
 import { OffersFull } from '../../types/types';
 import OfferCard from '../components/OfferCard';
-import { RootState } from '../../store/index';
+import FavoritesEmpty from './FavoritesEmpty';
+import { RootState } from '../../store/store-hooks';
 import { useAppDispatch, useAppSelector } from '../../store/store-hooks';
 import { toggleFavorite } from '../../store/offersSlice';
 import Header from '../components/Header';
@@ -11,6 +12,10 @@ const FavoritesPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const offers = useAppSelector((state: RootState) => state.offers.offers);
   const favoriteOffers = offers.filter((offer) => offer.isFavorite);
+
+  if (favoriteOffers.length === 0) {
+    return <FavoritesEmpty />;
+  }
 
   const groupedByCity = favoriteOffers
     .filter((offer): offer is OffersFull & { city: { name: string } } => !!offer.city?.name)
@@ -46,8 +51,13 @@ const FavoritesPage: React.FC = () => {
                   </div>
                   <div className="favorites__places">
                     {cityOffers.map((offer) => (
-                      <OfferCard isActive={false} key={offer.id} offer={offer} onOfferMouseEnter={() => { }} onOfferMouseLeave={() => { }}
+                      <OfferCard
+                        isActive={false}
+                        key={offer.id}
+                        offer={offer}
+                        onOfferMouseEnter={() => { }} onOfferMouseLeave={() => { }}
                         onFavoriteClick={onFavoriteClick}
+                        variant="favorites"
                       />
                     ))}
                   </div>

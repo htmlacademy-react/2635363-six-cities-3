@@ -38,12 +38,15 @@ export interface OfferPageProps {
   offers: OffersFull[];
 }
 
+export type CardVariant = 'cities' | 'favorites' | 'nearPlaces';
+
 export interface OfferCardProps {
   offer: OfferPreview;
   isActive: boolean;
   onOfferMouseEnter: (id: string) => void;
   onOfferMouseLeave: () => void;
   onFavoriteClick: (id: string) => void;
+  variant: CardVariant;
   className?: string;
 }
 
@@ -123,6 +126,8 @@ export type State = {
 
 export interface OffersState {
   offers: OffersFull[];
+  isLoading: boolean;
+  hasError: boolean;
 }
 
 export type ActionType = | { type: 'SET_CITY'; payload: string }

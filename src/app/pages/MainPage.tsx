@@ -1,7 +1,6 @@
-import { CITIES } from '../../mocks/offers';
-import { CITIES_DATA } from '../../mocks/offers';
+
 import OffersList from '../components/OffersList';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Map from '../components/Map';
 import { useAppDispatch, useAppSelector } from '../../store/store-hooks';
 import { changeCity } from '../../store/actions';
@@ -10,6 +9,8 @@ import { toggleFavorite } from '../../store/offersSlice';
 import SortingOptions from '../components/SortingOptions';
 import { SortType } from '../../types/types';
 import Header from '../components/Header';
+import { fetchOffers } from '../../store/offersSlice';
+import Spinner from '../components/spinner/Spinner';
 
 
 const MainPage: React.FC = () => {
@@ -18,6 +19,10 @@ const MainPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const [activeOfferId, setActiveOfferId] = useState<string | null>(null);
   const [sortType, setSortType] = useState<SortType>('Popular');
+
+  useEffect(() => {
+    dispatch(fetchOffers());
+  }, [dispatch]);
 
   const filteredOffers = offers.filter(
     (offer) => offer.city?.name === city
@@ -39,11 +44,23 @@ const MainPage: React.FC = () => {
     dispatch(changeCity(cityName));
   };
 
-  const cityData = CITIES_DATA[city];
+  const cityData = filteredOffers[0]?.city;
+  const cities = [...new Set(filteredOffers.map((offer) => offer.city?.name))];
 
   const onFavoriteClick = (id: string) => {
     dispatch(toggleFavorite(id));
   };
+
+  const isLoading = useAppSelector((state) => state.offers.isLoading);
+  const hasError = useAppSelector((state) => state.offers.hasError);
+
+  if (isLoading) {
+    return <Spinner />;
+  }
+
+  if (hasError) {
+    return <p>Сервер временно недоступен 😿</p>;
+  }
 
   return (
     <div className="page page--gray page--main">
@@ -56,7 +73,7 @@ const MainPage: React.FC = () => {
         <div className="tabs">
           <section className="locations container">
 
-            <CitiesList cities={CITIES} activeCity={city} onCityClick={onCityClick} />
+            <CitiesList cities={cities} activeCity={city} onCityClick={onCityClick} />
 
           </section>
         </div>

@@ -165,7 +165,7 @@ const OfferPage: React.FC = () => {
                   onOfferMouseEnter={() => setActiveOfferId(offer.id)}
                   onOfferMouseLeave={() => setActiveOfferId(null)}
                   onFavoriteClick={() => dispatch(toggleFavorite(offer.id))}
-                  className="near-places__card"
+                  variant="nearPlaces"
                 />
               ))}
             </div>

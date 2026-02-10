@@ -1,7 +1,9 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { reducer as cityReducer } from './reducer';
 import offersReducer from './offersSlice';
+import { createAPI } from '../api/api';
 
+const api = createAPI();
 
 const rootReducer = combineReducers({
   offers: offersReducer,
@@ -10,8 +12,12 @@ const rootReducer = combineReducers({
 
 export const store = configureStore({
   reducer: rootReducer,
-});
 
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      thunk: {
+        extraArgument: api,
+      },
+    }),
+});
 
