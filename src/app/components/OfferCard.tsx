@@ -1,20 +1,45 @@
 import { Link } from 'react-router-dom';
 import { getRatingWidth } from '../utils/rating';
-import { OfferCardProps } from '../../types/types';
+import { CardVariant, OfferCardProps } from '../../types/types';
 
-const OfferCard: React.FC<OfferCardProps> = ({
+const IMAGE_SIZES: Record<CardVariant, { width: number; height: number }> = {
+  cities: { width: 260, height: 200 },
+  nearPlaces: { width: 260, height: 200 },
+  favorites: { width: 150, height: 110 },
+};
+
+const IMAGE_WRAPPER_CLASS: Record<CardVariant, string> = {
+  cities: 'cities__image-wrapper',
+  nearPlaces: 'near-places__image-wrapper',
+  favorites: 'favorites__image-wrapper',
+};
+
+const CARD_CLASS: Record<CardVariant, string> = {
+  cities: 'cities__card',
+  nearPlaces: 'near-places__card',
+  favorites: 'favorites__card',
+};
+
+type Props = OfferCardProps & {
+  variant: CardVariant;
+}
+
+const OfferCard: React.FC<Props> = ({
   offer,
   onOfferMouseEnter,
   onOfferMouseLeave,
   onFavoriteClick,
-  className = 'favorites__card'
+  variant,
 }) => {
   const { id, price, rating, title, type, previewImage, isFavorite = false, isPremium = false } = offer;
+
+  const { width, height } = IMAGE_SIZES[variant];
+
   return (
     <article
       onMouseEnter={() => onOfferMouseEnter(id)}
       onMouseLeave={() => onOfferMouseLeave()}
-      className={`${className} place-card`}
+      className={`${CARD_CLASS[variant]} place-card`}
     >
       {isPremium && (
         <div className="place-card__mark">
@@ -22,12 +47,12 @@ const OfferCard: React.FC<OfferCardProps> = ({
         </div>
       )}
 
-      <div className="favorites__image-wrapper place-card__image-wrapper">
+      <div className={`${IMAGE_WRAPPER_CLASS[variant]} place-card__image-wrapper`}>
         <Link to={`/offer/${id}`} key={id}>
           <img className="place-card__image"
             src={previewImage}
-            width="150"
-            height="110"
+            width={width}
+            height={height}
             alt="Place image"
           />
         </Link>
@@ -62,7 +87,7 @@ const OfferCard: React.FC<OfferCardProps> = ({
         </h2>
         <p className="place-card__type">{type}</p>
       </div>
-    </article>
+    </article >
   );
 };
 

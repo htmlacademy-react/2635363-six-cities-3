@@ -1,14 +1,25 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import offers from '../mocks/offers';
-import { OffersState } from '../types/types';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { OffersFull, OffersState } from '../types/types';
+import { AxiosInstance } from 'axios';
 
-const initialState: OffersState = {
-  offers: offers,
+export const fetchOffers = createAsyncThunk<
+  OffersFull[],
+  undefined,
+  { extra: AxiosInstance }
+>('offers/fetchOffers', async (_, { extra: api }) => {
+  const { data } = await api.get<OffersFull[]>('/six-cities/offers');
+  return data;
+});
+
+const offersInitialState: OffersState = {
+  offers: [],
+  isLoading: false,
+  hasError: false,
 };
 
 const offersSlice = createSlice({
   name: 'offers',
-  initialState,
+  initialState: offersInitialState,
   reducers: {
     toggleFavorite: (state, action: PayloadAction<string>) => {
       const favoriteOffer = state.offers.find((offer) => offer.id === action.payload);
@@ -16,6 +27,21 @@ const offersSlice = createSlice({
         favoriteOffer.isFavorite = !favoriteOffer.isFavorite;
       }
     }
+  },
+  extraReducers(builder) {
+    builder
+      .addCase(fetchOffers.pending, (state) => {
+        state.isLoading = true;
+        state.hasError = false;
+      })
+      .addCase(fetchOffers.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.offers = action.payload;
+      })
+      .addCase(fetchOffers.rejected, (state) => {
+        state.isLoading = false;
+        state.hasError = true;
+      });
   },
 });
 
