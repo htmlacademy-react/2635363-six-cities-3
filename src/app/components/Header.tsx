@@ -2,9 +2,9 @@ import { Link } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../store/store-hooks';
 import { logoutAsync } from '../../store/authSlice';
 import { RootState } from '../../store/store-hooks';
-import { useCallback } from 'react';
+import { memo, useCallback } from 'react';
 
-const Header: React.FC = () => {
+const Header: React.FC = memo(() => {
   const dispatch = useAppDispatch();
 
   const { authorizationStatus, user } = useAppSelector((state: RootState) => state.auth);
@@ -69,6 +69,8 @@ const Header: React.FC = () => {
       </div>
     </header >
   );
-};
+});
+
+Header.displayName = 'Header';
 
 export default Header;

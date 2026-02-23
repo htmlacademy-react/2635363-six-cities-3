@@ -1,4 +1,4 @@
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/store-hooks';
 import { getRatingWidth } from '../utils/rating';
 import ReviewList from '../components/ReviewList';
@@ -6,10 +6,11 @@ import Map from '../components/Map';
 import OfferCard from '../components/OfferCard';
 import { useEffect, useState } from 'react';
 import Header from '../components/Header';
-import { fetchOfferById, fetchNearbyOffers, toggleFavoriteServer } from '../../store/offersSlice';
+import { fetchOfferById, fetchNearbyOffers } from '../../store/offersSlice';
 import { fetchReviews } from '../../store/reviewsSlice';
 import ReviewForm from '../components/ReviewForm';
 import Spinner from '../components/spinner/Spinner';
+import { useFavoriteToggle } from '../../hoocks/useFavoriteToggle';
 
 
 const OfferPage: React.FC = () => {
@@ -22,7 +23,7 @@ const OfferPage: React.FC = () => {
 
   const [activeOfferId, setActiveOfferId] = useState<string | null>(null);
 
-  const navigate = useNavigate();
+  const onFavoriteClick = useFavoriteToggle();
 
   useEffect(() => {
     if (id) {
@@ -47,19 +48,6 @@ const OfferPage: React.FC = () => {
   if (!currentOffer) {
     return null;
   }
-
-  const onFavoriteClick = () => {
-    const status = currentOffer.isFavorite ? 0 : 1;
-    dispatch(toggleFavoriteServer({ offerId: currentOffer.id, status }));
-  };
-
-  const handleBookmarkClick = () => {
-    if (authorizationStatus !== 'AUTH') {
-      navigate('/login');
-      return;
-    }
-    onFavoriteClick();
-  };
 
   const nearbyThreeOffers = nearbyOffers.slice(0, 3);
   const onMapOffers = [currentOffer, ...nearbyThreeOffers];
@@ -105,7 +93,10 @@ const OfferPage: React.FC = () => {
                       'offer__bookmark-button--active' : ''
                     }`
                   }
-                  onClick={handleBookmarkClick}
+                  onClick={() => onFavoriteClick({
+                    id: currentOffer.id,
+                    isFavorite: currentOffer.isFavorite,
+                  })}
                   type="button"
                 >
                   <svg className="offer__bookmark-icon" width="31" height="33">
@@ -207,12 +198,11 @@ const OfferPage: React.FC = () => {
                   isActive={offer.id === activeOfferId}
                   onOfferMouseEnter={() => setActiveOfferId(offer.id)}
                   onOfferMouseLeave={() => setActiveOfferId(null)}
-                  onFavoriteClick={() => {
-                    dispatch(toggleFavoriteServer({
-                      offerId: offer.id,
-                      status: offer.isFavorite ? 0 : 1,
-                    }));
-                  }}
+                  onFavoriteClick={() =>
+                    onFavoriteClick({
+                      id: offer.id,
+                      isFavorite: offer.isFavorite,
+                    })}
                   variant="nearPlaces"
                 />
               ))}

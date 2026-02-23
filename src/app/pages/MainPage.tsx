@@ -6,26 +6,23 @@ import { useAppDispatch, useAppSelector } from '../../store/store-hooks';
 import { changeCity } from '../../store/citySlice';
 import CitiesList from '../components/CitiesList';
 import CitiesEmpty from '../components/CitiesEmpty';
-import { toggleFavoriteServer } from '../../store/offersSlice';
 import SortingOptions from '../components/SortingOptions';
 import Header from '../components/Header';
 import { fetchOffers } from '../../store/offersSlice';
 import Spinner from '../components/spinner/Spinner';
 import { CITIES } from '../../const/const';
-import { SortType, FavoriteToggleData } from '../../types/types';
-import { useNavigate } from 'react-router-dom';
+import { SortType } from '../../types/types';
+import { useFavoriteToggle } from '../../hoocks/useFavoriteToggle';
 
 
 const MainPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const offers = useAppSelector((state) => state.offers.offers);
   const city = useAppSelector((state) => state.city.city);
-  const authorizationStatus = useAppSelector((state) => state.auth.authorizationStatus);
 
   const [activeOfferId, setActiveOfferId] = useState<string>('');
   const [sortType, setSortType] = useState<SortType>('Popular');
 
-  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchOffers());
@@ -61,18 +58,7 @@ const MainPage: React.FC = () => {
     dispatch(changeCity(cityName));
   }, [dispatch]);
 
-  const onFavoriteClick = useCallback(({ id, isFavorite }: FavoriteToggleData) => {
-    const newStatus = isFavorite ? 0 : 1;
-    dispatch(toggleFavoriteServer({ offerId: id, status: newStatus }));
-  }, [dispatch]);
-
-  const handleBookmarkClick = () => {
-    if (authorizationStatus !== 'AUTH') {
-      navigate('/login');
-      return;
-    }
-    onFavoriteClick({ id: activeOfferId, isFavorite: false });
-  };
+  const onFavoriteClick = useFavoriteToggle();
 
   const isLoading = useAppSelector((state) => state.offers.isLoading);
   const hasError = useAppSelector((state) => state.offers.hasError);
@@ -117,7 +103,7 @@ const MainPage: React.FC = () => {
                   <OffersList
                     offers={sortedOffers}
                     activeOfferId={activeOfferId}
-                    onFavoriteClick={handleBookmarkClick}
+                    onFavoriteClick={onFavoriteClick}
                     onActiveOfferChange={setActiveOfferId}
                   />
 

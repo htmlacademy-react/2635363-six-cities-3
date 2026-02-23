@@ -3,15 +3,16 @@ import { OffersFull } from '../../types/types';
 import OfferCard from '../components/OfferCard';
 import FavoritesEmpty from './FavoritesEmpty';
 import { RootState } from '../../store/store-hooks';
-import { useAppDispatch, useAppSelector } from '../../store/store-hooks';
-import { toggleFavoriteServer } from '../../store/offersSlice';
+import { useAppSelector } from '../../store/store-hooks';
 import Header from '../components/Header';
 import { Link } from 'react-router-dom';
+import { useFavoriteToggle } from '../../hoocks/useFavoriteToggle';
 
 const FavoritesPage: React.FC = () => {
-  const dispatch = useAppDispatch();
   const offers = useAppSelector((state: RootState) => state.offers.offers);
   const favoriteOffers = offers.filter((offer) => offer.isFavorite);
+
+  const onFavoriteClick = useFavoriteToggle();
 
   if (favoriteOffers.length === 0) {
     return <FavoritesEmpty />;
@@ -27,11 +28,6 @@ const FavoritesPage: React.FC = () => {
       acc[cityName].push(offer);
       return acc;
     }, {});
-
-  const onFavoriteClick = (id: string, isFavorite: boolean) => {
-    const newStatus = isFavorite ? 0 : 1;
-    dispatch(toggleFavoriteServer({ offerId: id, status: newStatus }));
-  };
 
   return (
     <div className="page">
@@ -57,7 +53,10 @@ const FavoritesPage: React.FC = () => {
                         key={offer.id}
                         offer={offer}
                         onOfferMouseEnter={() => { }} onOfferMouseLeave={() => { }}
-                        onFavoriteClick={() => onFavoriteClick(offer.id, offer.isFavorite)}
+                        onFavoriteClick={() => onFavoriteClick({
+                          id: offer.id,
+                          isFavorite: offer.isFavorite,
+                        })}
                         variant="favorites"
                       />
                     ))}
